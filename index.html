@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QAi - آپ کا ذہین اور تخلیقی معاون</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Amiri -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base styles for the body and overall container */
+        html {
+            font-size: 16px; /* Base font size for rem units */
+        }
+        body {
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #1a1a2e, #0f0f1a);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: background-color 0.5s ease; /* Smooth transition for theme change */
+        }
+
+        /* Light theme styles */
+        body.light-theme {
+            background: linear-gradient(135deg, #f0f0f0, #ffffff);
+            color: #1a1a2e;
+        }
+        body.light-theme .chat-container {
+            background-color: #ffffff;
+            border-color: #d0d0d0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        body.light-theme .chat-header {
+            background: linear-gradient(90deg, #6a0dad, #8a2be2); /* Futuristic purple gradient */
+            border-bottom-color: #c0c0c0;
+        }
+        body.light-theme .chat-header h1 {
+            color: #ffffff; /* White text on purple gradient */
+            text-shadow: none;
+        }
+        body.light-theme .chat-header h1 i {
+            color: #8be9fd; /* Cyan icon on purple gradient */
+        }
+        body.light-theme .user-message {
+            background: linear-gradient(135deg, #e0e0e0, #f0f0f0);
+            color: #1a1a2e;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        body.light-theme .ai-message {
+            background: linear-gradient(135deg, #a0d9ff, #7ac0ff); /* Lighter blue/green */
+            color: #1a1a2e;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Light theme heading colors */
+        body.light-theme .ai-message h1 {
+            color: #FF8C00 !important; /* Orange for H1 in light theme */
+        }
+        body.light-theme .ai-message h2,
+        body.light-theme .ai-message h3,
+        body.light-theme .ai-message h4,
+        body.light-theme .ai-message h5,
+        body.light-theme .ai-message h6 {
+            color: #007bff !important; /* Blue for subheadings in light theme */
+        }
+        body.light-theme .ai-message strong {
+            color: #FF00FF !important; /* Pink for key points in light theme */
+        }
+        body.light-theme .loading-indicator p {
+            color: #1a1a2e;
+            text-shadow: none;
+        }
+        body.light-theme .chat-input-area {
+            background-color: #e0e0e0;
+            border-top-color: #d0d0d0;
+        }
+        body.light-theme .chat-input-area input {
+            background-color: #e8f0fe; /* Appealing light color */
+            color: #1a1a2e;
+        }
+        body.light-theme .chat-input-area input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+        body.light-theme .chat-input-area .action-buttons-top button {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: #ffffff;
+        }
+         body.light-theme .chat-input-area .action-buttons-top button:hover {
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            background: linear-gradient(90deg, #0056b3, #007bff);
+        }
+        body.light-theme .chat-input-area .action-buttons-top button:disabled,
+        body.light-theme .q-modes-button:disabled {
+            background: #c0c0c0;
+        }
+        /* Q-Modes Button Light Theme */
+        body.light-theme .q-modes-button {
+            background: linear-gradient(90deg, #FFA500, #ff8c00) !important; /* Orange gradient */
+            color: #ffffff !important;
+            border: 1px solid #cc8400 !important;
+        }
+        body.light-theme .q-modes-button:hover {
+            background: linear-gradient(90deg, #ff8c00, #ffA500) !important;
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.4) !important;
+        }
+
+        body.light-theme .feature-icons button {
+            color: #1a1a2e;
+            opacity: 0.8;
+        }
+        body.light-theme .feature-icons button:hover {
+            color: #007bff;
+        }
+        body.light-theme .feature-icons button.active {
+            color: #0056b3;
+        }
+        body.light-theme .chat-messages::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        body.light-theme .chat-messages::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
+        }
+        body.light-theme .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #b0b0b0;
+        }
+        body.light-theme .modal-content {
+            background-color: #f0f0f0;
+            border-color: #d0d0d0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        body.light-theme .modal-content h2 {
+            color: #007bff;
+            text-shadow: none;
+        }
+        body.light-theme .modal-content p {
+            color: #4B0082; /* Indigo for About text in light theme */
+        }
+        body.light-theme .modal-content ul {
+            color: #333333;
+        }
+        body.light-theme .modal-close-button {
+            background: linear-gradient(90deg, #dc3545, #c82333);
+        }
+        body.light-theme .modal-close-button:hover {
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+        body.light-theme .sidebar {
+            background-color: #f8f8f8;
+            border-left-color: #e0e0e0;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        body.light-theme .sidebar-header {
+            background-color: #e0e0e0;
+            border-bottom-color: #d0d0d0;
+            color: #1a1a2e;
+        }
+        body.light-theme .sidebar-option {
+            background-color: #004080; /* Dark blue for light theme sidebar options */
+            color: #ffffff;
+        }
+        body.light-theme .sidebar-option:hover {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
+        body.light-theme .sidebar-option i {
+            color: #ffffff; /* White icon on dark blue */
+        }
+        body.light-theme .sidebar-option:hover i {
+            color: #8be9fd; /* Cyan on hover */
+        }
+        body.light-theme .language-option.selected {
+            background-color: #007bff;
+            color: white;
+        }
+        body.light-theme .language-option:hover {
+            background-color: #e0e0e0;
+            color: #007bff;
+        }
+        body.light-theme .theme-toggle-button {
+            background-color: #c0c0c0;
+            color: #1a1a2e;
+        }
+        body.light-theme .theme-toggle-button:hover {
+            background-color: #b0b0b0;
+        }
+        body.light-theme .suggested-questions-container {
+            background-color: #f0f0f0;
+            border-color: #d0d0d0;
+        }
+        body.light-theme .suggested-question-button {
+            background-color: #e0e0e0;
+            color: #1a1a2e;
+            border-color: #c0c0c0;
+        }
+        body.light-theme .suggested-question-button:hover {
+            background-color: #d0d0d0;
+            color: #007bff;
+        }
+        body.light-theme .ai-message .message-actions button,
+        body.light-theme .user-message .message-actions button {
+            background-color: #e0e0e0; /* Lighter background for buttons in light theme */
+            color: #0056b3; /* Darker blue for text/icon in light theme */
+            border-color: #c0c0c0;
+        }
+        body.light-theme .ai-message .message-actions button:hover,
+        body.light-theme .user-message .message-actions button:hover {
+            background-color: #d0d0d0;
+            color: #007bff;
+        }
+        body.light-theme .tone-option-button,
+        body.light-theme .q-modes-option-button {
+            background-color: #e0e0e0;
+            color: #1a1a2e;
+            border-color: #c0c0c0;
+        }
+        body.light-theme .tone-option-button:hover,
+        body.light-theme .q-modes-option-button:hover {
+            background-color: #d0d0d0;
+            color: #007bff;
+        }
+        body.light-theme .tone-option-button.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+        body.light-theme .q-modes-option-button.selected {
+            background-color: #007bff;
+            color: white;
+        }
+        body.light-theme .image-preview-container {
+            background-color: #e8f0fe;
+            border-color: #d0d0d0;
+        }
+        body.light-theme .image-preview-container span {
+            color: #1a1a2e;
+        }
+        body.light-theme .ui-language-toggle-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #1a1a2e;
+        }
+        body.light-theme .ui-language-toggle-button:hover {
+             background-color: rgba(255, 255, 255, 0.3);
+        }
+
+
+        /* Main chat container styling */
+        .chat-container {
+            background-color: #2a2a4a;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid #4a4a6a;
+            animation: proWelcome 0.8s ease-out forwards; /* Pro welcome animation */
+            position: relative; /* For absolute positioning of loading indicator */
+        }
+
+        /* Chat header styling */
+        .chat-header {
+            background: linear-gradient(90deg, #6a0dad, #8a2be2); /* Futuristic purple gradient */
+            padding: 10px 20px; /* Reduced padding for smaller height */
+            border-bottom: 1px solid #3a3a5a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+        }
+
+        /* Header title styling */
+        .chat-header h1 {
+            font-size: 1.6rem; /* Slightly reduced font size */
+            font-weight: bold;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(139, 233, 253, 0.5);
+            flex-grow: 1; /* Allow it to take available space */
+            justify-content: center; /* Center the text */
+            position: relative; /* For animation */
+        }
+        .chat-header h1 i {
+            margin-left: 10px; /* Adjust for RTL */
+            color: #8be9fd;
+            animation: pulse 2s infinite ease-in-out; /* Pulse animation for icon */
+        }
+        .chat-header .qai-name-header {
+            font-size: 2rem; /* Larger font size for QAi name in header */
+            font-weight: bold;
+            color: #50fa7b; /* Bright green */
+            text-shadow: 0 0 10px rgba(80, 250, 123, 0.7);
+            animation: pulse-qai 2s infinite ease-in-out; /* New animation for QAi name */
+        }
+
+
+        /* Status bar buttons */
+        .status-bar-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .status-bar-buttons button, .ui-language-toggle-button { /* Added ui-language-toggle-button */
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1rem; /* Smaller font size for status bar buttons */
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+            padding: 5px 8px; /* Smaller padding */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .status-bar-buttons button:hover, .ui-language-toggle-button:hover { /* Added ui-language-toggle-button */
+            opacity: 1;
+            color: #8be9fd;
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .ui-language-toggle-button {
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+        /* New Q-Modes shortcut button animation */
+        #qModesShortcutStatusBarButton {
+            color: #FFA500; /* Orange color */
+            animation: pulse-orange 2.5s infinite ease-in-out;
+        }
+        body.light-theme #qModesShortcutStatusBarButton {
+             color: #ff8c00;
+        }
+
+
+        /* Chat messages area */
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            padding-bottom: 180px; /* Increased padding for new chat input area layout + margin */
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            scroll-behavior: smooth;
+            background: linear-gradient(45deg, #2a2a4a, #1a1a2e, #0f0f1a); /* Animated background */
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            position: relative; /* Crucial for absolute positioning of loading-indicator */
+        }
+        body.light-theme .chat-messages {
+            background: linear-gradient(45deg, #f0f0f0, #ffffff, #f8f8f8);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+
+        /* Individual message styling */
+        .message {
+            max-width: 75%; /* Slightly reduced width as requested */
+            padding: 12px 18px;
+            border-radius: 15px;
+            word-wrap: break-word;
+            animation: fadeIn 0.5s ease-out forwards;
+            opacity: 0; /* Start hidden for animation */
+        }
+        /* Staggered animation for initial messages */
+        .suggested-questions-container { animation-delay: 0.5s; }
+        .message.initial-welcome { animation-delay: 0.7s; }
+
+        .user-message {
+            background: linear-gradient(135deg, #6a6a8a, #8a8a9a); /* User message gradient */
+            align-self: flex-start; /* For RTL, user messages are on the right */
+            color: #ffffff;
+            border-bottom-left-radius: 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        body.light-theme .user-message {
+            background: linear-gradient(135deg, #e0e0e0, #f0f0f0);
+            color: #1a1a2e;
+        }
+        .ai-message {
+            background: linear-gradient(135deg, #8be9fd, #50fa7b);
+            align-self: flex-end; /* For RTL, AI messages are on the left */
+            color: #1a1a2e;
+            border-bottom-right-radius: 0;
+        }
+        .message img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .message p {
+            margin-bottom: 0; /* No blank lines at the end of messages */
+        }
+        /* Headings and strong tags styling */
+        .ai-message h1 {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #FF8C00 !important; /* Orange for H1 */
+        }
+        .ai-message h2, .ai-message h3, .ai-message h4, .ai-message h5, .ai-message h6 {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #007bff !important; /* Blue for subheadings */
+        }
+        .ai-message strong {
+            color: #FF00FF !important; /* Pink for key points */
+            font-weight: bold;
+        }
+
+        .message ul, .message ol {
+            padding-right: 20px; /* For RTL lists */
+            margin-bottom: 0; /* No blank lines at the end of messages */
+        }
+        .message table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 0; /* No blank lines at the end of messages */
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* For rounded corners */
+        }
+        .message th, .message td {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px;
+            text-align: right; /* For RTL tables */
+        }
+        .message th {
+            background-color: rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+        .message .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            justify-content: flex-end; /* Align actions to the left for AI messages */
+            flex-wrap: wrap;
+        }
+        .message-actions button {
+            background-color: #1f3a5f; /* Darker blue background for buttons */
+            color: #8be9fd; /* Cyan text/icon color for buttons */
+            border: 1px solid #4a4a6a;
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .message-actions button:hover {
+            background-color: #2a4c7a;
+            transform: translateY(-1px);
+            color: #FFD700; /* Gold on hover */
+        }
+        .message-actions button:active {
+            transform: translateY(0);
+        }
+
+        /* --- NEW Quantum Atom Loading Indicator --- */
+        .loading-indicator {
+            align-self: flex-end;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            max-width: 75%;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .quantum-atom {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .quantum-atom .nucleus {
+            width: 20px;
+            height: 20px;
+            background-color: #50fa7b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #50fa7b, 0 0 20px #50fa7b;
+            position: absolute;
+        }
+        body.light-theme .quantum-atom .nucleus {
+            background-color: #007bff;
+            box-shadow: 0 0 10px #007bff, 0 0 20px #007bff;
+        }
+        .quantum-atom .electron-path {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(139, 233, 253, 0.5);
+            border-radius: 50%;
+            animation: rotate 4s linear infinite;
+        }
+        .quantum-atom .electron {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: #8be9fd;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #8be9fd;
+        }
+        body.light-theme .quantum-atom .electron {
+            background-color: #ff8c00;
+             box-shadow: 0 0 8px #ff8c00;
+        }
+        .electron-path:nth-child(2) { animation-duration: 3s; transform: rotate(60deg); }
+        .electron-path:nth-child(3) { animation-duration: 2s; transform: rotate(120deg); }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* --- END NEW Loading Indicator --- */
+
+        .loading-indicator p {
+            color: #e0e0e0;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(139, 233, 253, 0.5);
+        }
+        .loading-indicator p .dots {
+            display: inline-block;
+            width: 20px; /* Adjust width as needed */
+            text-align: left;
+        }
+        .loading-indicator p .dots::after {
+            display: inline-block;
+            animation: loading-dots 1.5s steps(4, end) infinite;
+            content: "";
+        }
+        @keyframes loading-dots {
+          0% { content: ''; }
+          25% { content: '.'; }
+          50% { content: '..'; }
+          75% { content: '...'; }
+          100% { content: '...'; }
+        }
+
+
+        /* New Chat Input Area */
+        .chat-input-area {
+            position: absolute;
+            bottom: 60px; /* Above the bottom status bar */
+            left: 0;
+            right: 0;
+            background-color: #2a2a4a;
+            padding: 15px 20px;
+            border-top: 1px solid #4a4a6a;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            border-top-left-radius: 18px;
+            border-top-right-radius: 18px;
+        }
+        .chat-input-area .action-buttons-top {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start; /* Align buttons to the right for RTL */
+            width: 100%; /* Take full width */
+            margin-bottom: 10px; /* Space between buttons and input */
+            align-items: center; /* Vertically align buttons */
+        }
+        .chat-input-area input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #5a5a7a;
+            background-color: #3f3f6f;
+            color: #e0e0e0;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            width: 100%; /* Take full width below buttons */
+        }
+        .chat-input-area input:focus {
+            border-color: #8be9fd;
+            box-shadow: 0 0 8px rgba(139, 233, 253, 0.6);
+        }
+        .chat-input-area .action-buttons-top button {
+            background: linear-gradient(90deg, #8be9fd, #50fa7b);
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+        }
+         .chat-input-area .action-buttons-top button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 233, 253, 0.4);
+            background: linear-gradient(90deg, #50fa7b, #8be9fd);
+        }
+        .chat-input-area .action-buttons-top button:disabled,
+        .chat-input-area .q-modes-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #5a5a7a;
+            box-shadow: none;
+            transform: none;
+        }
+        .chat-input-area .image-attach-button {
+            background-color: #3a3a5a;
+            color: #FFD700;
+            border: 1px solid #4a4a6a;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .chat-input-area .image-attach-button:hover {
+            background-color: #4a4a6a;
+            transform: translateY(-2px);
+        }
+        .q-modes-button {
+            background: linear-gradient(90deg, #FFA500, #ff8c00) !important; /* Orange gradient */
+            color: #ffffff !important;
+            border: 1px solid #cc8400 !important;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+        }
+        .q-modes-button:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 5px 15px rgba(255, 165, 0, 0.4) !important;
+            background: linear-gradient(90deg, #ff8c00, #ffA500) !important;
+        }
+
+
+        /* More Options (Hamburger) button */
+        .more-options-button {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .more-options-button:hover {
+            opacity: 1;
+            color: #8be9fd;
+            transform: scale(1.1);
+        }
+
+        /* Scrollbar Styling */
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #2a2a4a;
+            border-radius: 10px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #4a4a6a;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #6a6a8a;
+        }
+
+        /* Modal for About section and messages */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+            display: flex; /* Ensure it's flex when shown */
+        }
+        .modal-content {
+            background-color: #2a2a4a;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: zoomIn 0.3s ease-out;
+            border: 2px solid #4a4a6a;
+            max-height: 80vh; /* Make modal content scrollable */
+            overflow-y: auto;
+        }
+        .modal-content h2 {
+            font-size: 2rem;
+            color: #8be9fd;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(139, 233, 253, 0.3);
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #9370DB; /* Medium Purple for About text */
+            margin-bottom: 20px;
+            text-align: right; /* Align text to right for RTL */
+        }
+        body.light-theme .modal-content p {
+            color: #4B0082; /* Indigo for About text in light theme */
+        }
+        .modal-content ul {
+            list-style: disc;
+            padding-right: 20px; /* Adjust for RTL list bullets */
+            margin-bottom: 20px;
+            text-align: right;
+            color: #c0c0c0;
+        }
+        body.light-theme .modal-content ul {
+            color: #333333;
+        }
+        .modal-close-button {
+            background: linear-gradient(90deg, #ff6b6b, #ee5253);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .modal-close-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Sidebar (More Options Menu) */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0; /* Position on the right for RTL */
+            height: 100%;
+            width: 280px;
+            background-color: #20203a;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5); /* Shadow on the left */
+            transform: translateX(100%); /* Hidden by default */
+            transition: transform 0.3s ease-in-out;
+            z-index: 1001; /* Above modal if needed, but usually modals are on top */
+            display: flex;
+            flex-direction: column;
+            border-left: 2px solid #4a4a6a; /* Border on the left */
+        }
+        .sidebar.show {
+            transform: translateX(0); /* Show sidebar */
+        }
+        .sidebar-header {
+            background-color: #3a3a5a;
+            padding: 15px 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #8be9fd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #4a4a6a;
+        }
+        .sidebar-header i {
+            margin-left: 10px; /* Adjust for RTL */
+        }
+        .sidebar-close-button {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .sidebar-close-button:hover {
+            color: #ff6b6b;
+        }
+        .sidebar-options {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto; /* Make options scrollable */
+        }
+        .sidebar-option {
+            background-color: #1f3a5f; /* Darker blue for sidebar options */
+            color: #8be9fd; /* Cyan text for visibility */
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-align: right; /* Align text to right for RTL */
+            flex-wrap: wrap; /* Allow wrapping for controls */
+        }
+        .sidebar-option:hover {
+            background-color: #2a4c7a;
+            color: #FFD700; /* Gold on hover */
+            transform: translateX(-5px); /* Slide slightly on hover for RTL */
+        }
+        .sidebar-option i {
+            font-size: 1.3rem;
+            color: #8be9fd; /* Cyan icon */
+            margin-left: auto; /* Push icon to the left for RTL */
+        }
+        .sidebar-option:hover i {
+            color: #FFD700; /* Gold on hover */
+        }
+
+        /* Language selection in sidebar */
+        .language-options-container {
+            display: flex;
+            gap: 8px;
+            margin-right: auto;
+        }
+        .language-option {
+            background-color: #4a4a6a;
+            color: #e0e0e0;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .language-option.selected {
+            background-color: #50fa7b;
+            color: #1a1a2e;
+            font-weight: bold;
+            border-color: #8be9fd;
+        }
+        .language-option:hover:not(.selected) {
+            background-color: #6a6a8a;
+        }
+        
+
+        /* Theme Toggle Button */
+        .theme-toggle-button {
+            background-color: #4a4a6a;
+            color: #e0e0e0;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            text-align: right;
+            justify-content: flex-end; /* Align text to right for RTL */
+        }
+        .theme-toggle-button:hover {
+            background-color: #6a6a8a;
+            color: #8be9fd;
+            transform: translateX(-5px);
+        }
+        .theme-toggle-button i {
+            font-size: 1.3rem;
+            color: #50fa7b;
+            margin-left: auto;
+        }
+        .theme-toggle-button:hover i {
+            color: #8be9fd;
+        }
+
+        /* Suggested Questions */
+        .suggested-questions-container {
+            background-color: #2a2a4a;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #4a4a6a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: right; /* For RTL */
+        }
+        .suggested-questions-container h3 {
+            font-size: 1.3rem;
+            color: #8be9fd;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .suggested-questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        .suggested-question-button {
+            background-color: #3a3a5a;
+            color: #e0e0e0;
+            border: 1px solid #5a5a7a;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-align: right; /* For RTL */
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .suggested-question-button:hover {
+            background-color: #4a4a6a;
+            border-color: #8be9fd;
+            transform: translateY(-2px);
+        }
+
+        /* Bottom Status Bar */
+        .bottom-status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px; /* Height of the status bar */
+            background: linear-gradient(90deg, #1a1a2e, #0f0f1a);
+            color: #8be9fd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: bold;
+            border-top: 1px solid #4a4a6a;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* Above everything else */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+        body.light-theme .bottom-status-bar {
+            background: linear-gradient(90deg, #6a0dad, #8a2be2);
+            color: #ffffff;
+            border-top-color: #c0c0c0;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .bottom-status-bar .status-text {
+            font-size: 1rem; /* Smaller font size for QAi name */
+            font-weight: normal;
+            color: #8be9fd;
+            text-shadow: none;
+            animation: none;
+        }
+
+        /* Tone Option & Q-Modes Option Buttons */
+        .tone-option-button, .q-modes-option-button {
+            background-color: #3a3a5a;
+            color: #e0e0e0;
+            border: 1px solid #5a5a7a;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            min-width: 100px; /* Ensure a minimum width for small boxes */
+            text-align: center;
+        }
+        .tone-option-button:hover, .q-modes-option-button:hover {
+            background-color: #4a4a6a;
+            border-color: #8be9fd;
+            transform: translateY(-2px);
+        }
+        .q-modes-option-button.selected {
+            background-color: #50fa7b;
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+        .tone-option-button.selected {
+            background-color: #50fa7b; /* Bright green for selected tone */
+            color: #1a1a2e; /* Dark text for contrast */
+            font-weight: bold;
+            border-color: #8be9fd; /* Cyan border for emphasis */
+        }
+
+
+        /* Image preview in chat input area */
+        .image-preview-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background-color: #3f3f6f;
+            border-radius: 8px;
+            border: 1px solid #5a5a7a;
+        }
+        .image-preview-container img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        .image-preview-container span {
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+        .image-preview-container .remove-image-button {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-right: auto; /* Push to the left for RTL */
+        }
+        body.light-theme .image-preview-container {
+            background-color: #e8f0fe;
+            border-color: #d0d0d0;
+        }
+        body.light-theme .image-preview-container span {
+            color: #1a1a2e;
+        }
+
+        /* Scroll Arrows */
+        .scroll-arrow {
+            position: absolute;
+            right: 20px; /* Align to the right for RTL */
+            width: 50px;
+            height: 50px;
+            background-color: rgba(60, 60, 90, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            color: #8be9fd;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 998; /* Below chat input area, above messages */
+            opacity: 0;
+            visibility: hidden;
+        }
+        .scroll-arrow:hover {
+            background-color: rgba(80, 80, 110, 0.9);
+            transform: translateY(-5px) scale(1.05);
+            color: #50fa7b;
+        }
+        .scroll-arrow.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        #scrollToTopArrow {
+            top: 80px; /* Position below header */
+        }
+        #scrollToBottomArrow {
+            bottom: 200px; /* Position above chat input area */
+        }
+        body.light-theme .scroll-arrow {
+            background-color: rgba(200, 200, 200, 0.8);
+            color: #007bff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        body.light-theme .scroll-arrow:hover {
+            background-color: rgba(180, 180, 180, 0.9);
+            color: #0056b3;
+        }
+
+
+        /* Animations */
+        @keyframes proWelcome {
+            from { transform: translateY(30px) scale(0.98); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 5px rgba(139, 233, 253, 0.5); }
+            50% { transform: scale(1.05); text-shadow: 0 0 15px rgba(139, 233, 253, 0.8); }
+            100% { transform: scale(1); text-shadow: 0 0 5px rgba(139, 233, 253, 0.5); }
+        }
+        @keyframes pulse-qai {
+            0% { transform: scale(1); text-shadow: 0 0 10px rgba(80, 250, 123, 0.7); }
+            50% { transform: scale(1.08); text-shadow: 0 0 20px rgba(80, 250, 123, 0.9); }
+            100% { transform: scale(1); text-shadow: 0 0 10px rgba(80, 250, 123, 0.7); }
+        }
+         @keyframes pulse-orange {
+            0% { transform: scale(1); text-shadow: 0 0 4px rgba(255, 165, 0, 0.6); }
+            50% { transform: scale(1.1); text-shadow: 0 0 12px rgba(255, 165, 0, 0.9); }
+            100% { transform: scale(1); text-shadow: 0 0 4px rgba(255, 165, 0, 0.6); }
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .chat-container {
+                height: 98vh; /* Slightly taller on mobile */
+                border-radius: 15px;
+            }
+            .chat-header {
+                padding: 8px 15px;
+            }
+            .chat-header h1 {
+                font-size: 1.4rem;
+            }
+            .chat-header .qai-name-header {
+                font-size: 1.8rem; /* Smaller QAi name on mobile */
+            }
+            .more-options-button {
+                font-size: 1.2rem;
+            }
+            .chat-messages {
+                padding: 15px;
+                padding-bottom: 180px; /* Adjusted for mobile chat input area */
+                gap: 10px;
+            }
+            .message {
+                padding: 10px 15px;
+                max-width: 90%; /* Wider message boxes on mobile */
+            }
+            .chat-input-area {
+                padding: 10px 15px;
+            }
+            .chat-input-area input {
+                font-size: 0.9rem;
+            }
+            .chat-input-area .action-buttons-top button,
+            .chat-input-area .q-modes-button {
+                padding: 10px 12px; /* Adjusted padding for mobile */
+                font-size: 0.9rem;
+            }
+            .modal-content {
+                padding: 20px;
+            }
+            .modal-content h2 {
+                font-size: 1.6rem;
+            }
+            .modal-content p {
+                font-size: 1rem;
+            }
+            .sidebar {
+                width: 250px;
+            }
+            .sidebar-header {
+                font-size: 1.3rem;
+            }
+            .sidebar-option {
+                font-size: 1rem;
+            }
+            .sidebar-option i {
+                font-size: 1.1rem;
+            }
+            .suggested-questions-grid {
+                grid-template-columns: 1fr; /* Stack on mobile */
+            }
+            .suggested-question-button {
+                font-size: 0.9rem;
+            }
+            .status-bar-buttons {
+                gap: 5px; /* Smaller gap for mobile */
+            }
+            .status-bar-buttons button, .ui-language-toggle-button {
+                font-size: 0.8rem; /* Smaller font for mobile status bar buttons */
+                padding: 3px 6px;
+            }
+             .ui-language-toggle-button {
+                padding: 3px 8px; /* Slightly more padding for text */
+            }
+            .loading-indicator {
+                margin-bottom: 15px; /* Adjusted higher for mobile */
+            }
+            .bottom-status-bar {
+                height: 60px; /* Consistent height on mobile */
+                font-size: 0.9rem;
+            }
+            .scroll-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+                right: 10px;
+            }
+            #scrollToTopArrow {
+                top: 70px;
+            }
+            #scrollToBottomArrow {
+                bottom: 190px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="status-bar-buttons">
+                <button id="themeToggleStatusBarButton" title="تھیم تبدیل کریں" type="button">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="qModesShortcutStatusBarButton" title="جوابی موڈ" type="button">
+                    <i class="fas fa-brain"></i>
+                </button>
+                <button id="toneShortcutStatusBarButton" title="جواب کا انداز" type="button">
+                    <i class="fas fa-palette"></i>
+                </button>
+                <button id="uiLanguageToggleButton" class="ui-language-toggle-button" title="UI زبان تبدیل کریں" type="button">اردو</button>
+            </div>
+            <h1><span class="qai-name-header">QAi</span></h1>
+            <button id="moreOptionsButton" class="more-options-button" title="مزید آپشنز" type="button"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be dynamically inserted here by Firebase listener -->
+        </div>
+
+        <!-- Scroll Arrows -->
+        <div id="scrollToTopArrow" class="scroll-arrow" title="اوپر جائیں">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+        <div id="scrollToBottomArrow" class="scroll-arrow" title="نیچے جائیں">
+            <i class="fas fa-arrow-down"></i>
+        </div>
+
+        <!-- New Chat Input Area -->
+        <div class="chat-input-area" id="chatInputArea">
+            <div class="action-buttons-top">
+                 <button id="qModesButton" class="q-modes-button" title="جوابی موڈ تبدیل کریں" type="button">
+                    <i class="fas fa-brain"></i> <span id="qModesButtonText">Q-Modes</span>
+                </button>
+                <button id="imageAttachButton" class="image-attach-button" title="تصویر منسلک کریں" type="button">
+                    <i class="fas fa-camera"></i> <span id="imageAttachButtonText">تصویر</span>
+                </button>
+                <button id="sendButton" type="button">
+                    <i class="fas fa-paper-plane"></i> <span id="sendButtonText">بھیجیں</span>
+                </button>
+            </div>
+            <input type="text" id="chatUserInput" placeholder="اپنا پیغام یہاں لکھیں..." autofocus>
+            <div id="imagePreviewContainer" class="image-preview-container hidden">
+                <img id="imagePreview" src="" alt="تصویر کا پیش نظارہ">
+                <span id="imageFileName"></span>
+                <button id="removeImageButton" class="remove-image-button" title="تصویر ہٹائیں" type="button"><i class="fas fa-times-circle"></i></button>
+            </div>
+        </div>
+
+        <input type="file" id="imageFileInput" accept="image/*" class="hidden">
+
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <h2 id="aboutModalTitle">QAi (Query AI) کے بارے میں</h2>
+            <p id="aboutModalCreator">
+                <strong>*QAi سید ساخر ہاشمی کی کاوش اور خدا کی توفیق سے بنایا گیا جدید Ai ہے*</strong>
+            </p>
+            <p id="aboutModalP1">
+                QAi صرف ایک چیٹ بوٹ نہیں، بلکہ یہ ایک انقلابی مصنوعی ذہانت کا نظام ہے جو آپ کے ہر سوال کا جواب انتہائی تفصیل، دلچسپی، اور درستگی کے ساتھ فراہم کرنے کے لیے ڈیزائن کیا گیا ہے۔ اس کی خصوصیات اور انفرادیت اسے دیگر AI چیٹ بوٹس سے ممتاز کرتی ہیں:
+            </p>
+            <ul id="aboutModalList">
+                <li data-ur="<strong>جامع اور گہرائی سے جوابات:</strong> QAi ہر سوال کے تمام ممکنہ پہلوؤں کا احاطہ کرتا ہے، اور آپ کو ایسا تفصیلی جواب فراہم کرتا ہے جو آپ کی توقعات سے بڑھ کر ہوتا ہے۔ 📚" data-en="<strong>Comprehensive and In-depth Answers:</strong> QAi covers all possible aspects of every question, providing you with detailed answers that exceed your expectations. 📚"><strong>جامع اور گہرائی سے جوابات:</strong> QAi ہر سوال کے تمام ممکنہ پہلوؤں کا احاطہ کرتا ہے، اور آپ کو ایسا تفصیلی جواب فراہم کرتا ہے جو آپ کی توقعات سے بڑھ کر ہوتا ہے۔ 📚</li>
+                <li data-ur="<strong>تخلیقی اور منفرد انداز:</strong> یہ صرف معلومات فراہم نہیں کرتا، بلکہ اپنے جوابات کو ایک منفرد اور دلکش انداز میں پیش کرتا ہے، جس میں مناسب ہیڈنگز، نمبرنگ، ٹیبلز، اور ایموجیز شامل ہوتے ہیں۔ ✨" data-en="<strong>Creative and Unique Style:</strong> It doesn't just provide information, but presents its answers in a unique and engaging style, including appropriate headings, numbering, tables, and emojis. ✨"><strong>تخلیقی اور منفرد انداز:</strong> یہ صرف معلومات فراہم نہیں کرتا، بلکہ اپنے جوابات کو ایک منفرد اور دلکش انداز میں پیش کرتا ہے، جس میں مناسب ہیڈنگز، نمبرنگ، ٹیبلز، اور ایموجیز شامل ہوتے ہیں۔ ✨</li>
+                <li data-ur="<strong>تصویر اور متن کی سمجھ:</strong> QAi اب تصاویر کو سمجھ کر ان کے بارے میں تفصیلی جوابات دے سکتا ہے، اور آپ کے متن پر مبنی سوالات کا بھی مکمل احاطہ کرتا ہے۔ 📸" data-en="<strong>Image and Text Understanding:</strong> QAi can now understand images and provide detailed answers about them, and also fully covers your text-based questions. 📸"><strong>تصویر اور متن کی سمجھ:</strong> QAi اب تصاویر کو سمجھ کر ان کے بارے میں تفصیلی جوابات دے سکتا ہے، اور آپ کے متن پر مبنی سوالات کا بھی مکمل احاطہ کرتا ہے۔ 📸</li>
+                <li data-ur="<strong>پیشگی سوالات کا احاطہ:</strong> QAi آپ کے ذہن میں پیدا ہونے والے ممکنہ شک و شبہات یا مزید سوالات کو بھانپ کر انہیں بھی اپنے جواب میں شامل کرتا ہے، تاکہ آپ کو بار بار پوچھنے کی ضرورت نہ پڑے۔ 🤔" data-en="<strong>Anticipating Follow-up Questions:</strong> QAi anticipates potential doubts or further questions that may arise in your mind and includes them in its answer, so you don't need to ask repeatedly. 🤔"><strong>پیشگی سوالات کا احاطہ:</strong> QAi آپ کے ذہن میں پیدا ہونے والے ممکنہ شک و شبہات یا مزید سوالات کو بھانپ کر انہیں بھی اپنے جواب میں شامل کرتا ہے، تاکہ آپ کو بار بار پوچھنے کی ضرورت نہ پڑے۔ 🤔</li>
+                <li data-ur="<strong>مختلف فارمیٹس میں جوابات:</strong> یہ معلومات کو نہ صرف سادہ متن میں بلکہ خلاصے، تفصیلی وضاحت، اور یہاں تک کہ جدولوں کی صورت میں بھی پیش کر سکتا ہے۔ 📊" data-en="<strong>Answers in Various Formats:</strong> It can present information not only in plain text but also as summaries, detailed explanations, and even in tabular form. 📊"><strong>مختلف فارمیٹس میں جوابات:</strong> یہ معلومات کو نہ صرف سادہ متن میں بلکہ خلاصے، تفصیلی وضاحت، اور یہاں تک کہ جدولوں کی صورت میں بھی پیش کر سکتا ہے۔ 📊</li>
+                <li data-ur="<strong>تخلیقی تحریر میں معاونت:</strong> آپ کو کہانیوں، شاعری، یا دیگر تخلیقی مواد کے لیے نئے آئیڈیاز اور ابتدائی نکات فراہم کر سکتا ہے۔ 💡" data-en="<strong>Assistance in Creative Writing:</strong> It can provide you with new ideas and starting points for stories, poetry, or other creative content. 💡"><strong>تخلیقی تحریر میں معاونت:</strong> آپ کو کہانیوں، شاعری، یا دیگر تخلیقی مواد کے لیے نئے آئیڈیاز اور ابتدائی نکات فراہم کر سکتا ہے۔ 💡</li>
+                <li data-ur="<strong>جواب کا انداز (Tone):</strong> آپ اپنی مرضی کے مطابق جواب کا انداز منتخب کر سکتے ہیں، جیسے آٹو، اسلامی، فلسفیانہ، سائنسی، ادبی، مزاحیہ، بچگانہ یا مکس موڈ۔ 🗣️" data-en="<strong>Response Tone:</strong> You can choose the tone of the response according to your preference, such as Auto, Islamic, Philosophical, Scientific, Literary, Humorous, Childish or Mix Mode. 🗣️"><strong>جواب کا انداز (Tone):</strong> آپ اپنی مرضی کے مطابق جواب کا انداز منتخب کر سکتے ہیں، جیسے آٹو، اسلامی، فلسفیانہ، سائنسی، ادبی، مزاحیہ، بچگانہ یا مکس موڈ۔ 🗣️</li>
+                <li data-ur="<strong>مستقبل کی خصوصیات:</strong> QAi کو مستقبل کی AI ٹیکنالوجیز اور فیچرز کو آسانی سے شامل کرنے کے لیے ڈیزائن کیا گیا ہے۔ 🚀" data-en="<strong>Future Features:</strong> QAi is designed to easily incorporate future AI technologies and features. 🚀"><strong>مستقبل کی خصوصیات:</strong> QAi کو مستقبل کی AI ٹیکنالوجیز اور فیچرز کو آسانی سے شامل کرنے کے لیے ڈیزائن کیا گیا ہے۔ 🚀</li>
+            </ul>
+            <p id="aboutModalP2">
+                ہمارا مقصد آپ کو ایک ایسا AI تجربہ فراہم کرنا ہے جو نہ صرف معلومات فراہم کرے بلکہ آپ کو حیران کر دے اور آپ کی سوچ کو وسعت دے۔ QAi آپ کے ساتھ ہر قدم پر ایک ذہین اور قابل اعتماد معاون کے طور پر موجود ہے۔ 🌟
+            </p>
+            <button id="aboutModalCloseButton" class="modal-close-button" type="button">بند کریں</button>
+        </div>
+    </div>
+
+    <!-- Message Modal (for alerts/confirmations) -->
+    <div id="messageModal" class="modal">
+        <div class="modal-content">
+            <h2 id="messageModalTitle"></h2>
+            <p id="messageModalContent"></p>
+            <button id="messageModalCloseButton" class="modal-close-button" type="button">ٹھیک ہے</button>
+        </div>
+    </div>
+
+    <!-- Response Tone Modal -->
+    <div id="toneModal" class="modal">
+        <div class="modal-content">
+            <h2 id="toneModalTitle">جواب کا انداز منتخب کریں</h2>
+            <div class="flex flex-wrap justify-center gap-4 mt-4">
+                <button class="tone-option-button" data-tone="auto" data-ur="آٹو" data-en="Auto" type="button">آٹو</button>
+                <button class="tone-option-button" data-tone="islamic" data-ur="اسلامی" data-en="Islamic" type="button">اسلامی</button>
+                <button class="tone-option-button" data-tone="philosophical" data-ur="فلسفیانہ" data-en="Philosophical" type="button">فلسفیانہ</button>
+                <button class="tone-option-button" data-tone="scientific" data-ur="سائنسی" data-en="Scientific" type="button">سائنسی</button>
+                <button class="tone-option-button" data-tone="adbi" data-ur="ادبی" data-en="Literary" type="button">ادبی</button>
+                <button class="tone-option-button" data-tone="humorous" data-ur="مزاحیہ" data-en="Humorous" type="button">مزاحیہ</button>
+                <button class="tone-option-button" data-tone="childish" data-ur="بچگانہ" data-en="Childish" type="button">بچگانہ</button>
+                <button class="tone-option-button" data-tone="mix" data-ur="مکس موڈ" data-en="Mix Mode" type="button">مکس موڈ</button>
+            </div>
+            <button id="toneModalCloseButton" class="modal-close-button mt-4" type="button">بند کریں</button>
+        </div>
+    </div>
+
+    <!-- Q-Modes Modal -->
+    <div id="qModesSelectionModal" class="modal">
+        <div class="modal-content">
+            <h2 id="qModesModalTitle">جوابی موڈ منتخب کریں</h2>
+            <div class="flex flex-wrap justify-center gap-4 mt-4">
+                <button class="q-modes-option-button" data-qmode="quantum" data-ur="کوانٹم موڈ (تفصیلی)" data-en="Quantum Mode (Detailed)" type="button">کوانٹم موڈ (تفصیلی)</button>
+                <button class="q-modes-option-button" data-qmode="quick" data-ur="کوئیک موڈ (مختصر)" data-en="Quick Mode (Concise)" type="button">کوئیک موڈ (مختصر)</button>
+            </div>
+            <button id="qModesModalCloseButton" class="modal-close-button mt-4" type="button">بند کریں</button>
+        </div>
+    </div>
+
+
+    <!-- More Options Sidebar -->
+    <div id="moreOptionsSidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span id="sidebarTitle"><i class="fas fa-cogs"></i> آپشنز</span>
+            <button id="sidebarCloseButton" class="sidebar-close-button" type="button"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-options">
+            <div class="sidebar-option" id="aboutOption">
+                <i class="fas fa-info-circle"></i> <span class="sidebar-text">QAi کے بارے میں</span>
+            </div>
+            <div class="sidebar-option" id="responseLangOptionContainer">
+                <i class="fas fa-language"></i> <span class="sidebar-text">جوابی زبان کی ترجیح:</span>
+                <div class="language-options-container">
+                    <button class="language-option selected" data-lang="ur" type="button">اردو</button>
+                    <button class="language-option" data-lang="en" type="button">English</button>
+                    <button class="language-option" data-lang="ur-roman" type="button">رومن اردو</button>
+                </div>
+            </div>
+            <div class="sidebar-option" id="themeToggleOption">
+                <i class="fas fa-moon"></i> <span class="sidebar-text">تھیم تبدیل کریں</span>
+            </div>
+            <div class="sidebar-option" id="newChatOption">
+                <i class="fas fa-plus-circle"></i> <span class="sidebar-text">نئی گفتگو شروع کریں</span>
+            </div>
+            <div class="sidebar-option" id="responseToneOption">
+                <i class="fas fa-microphone-alt"></i> <span class="sidebar-text">جواب کا انداز</span>
+            </div>
+            <div class="sidebar-option" id="creativeWritingOption">
+                <i class="fas fa-lightbulb"></i> <span class="sidebar-text">تخلیقی تحریر</span>
+            </div>
+            <div class="sidebar-option" id="copyChatOption">
+                <i class="fas fa-copy"></i> <span class="sidebar-text">پوری چیٹ کاپی کریں</span>
+            </div>
+            <div class="sidebar-option" id="exportChatOption">
+                <i class="fas fa-download"></i> <span class="sidebar-text">چیٹ ایکسپورٹ کریں (ٹیکسٹ)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <div class="bottom-status-bar">
+        <span class="status-text" id="bottomStatusBarText">QAi - آپ کا ذہین اور تخلیقی معاون</span>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, updateDoc, arrayUnion, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // DOM Elements
+        const chatMessages = document.getElementById('chatMessages');
+        const chatUserInput = document.getElementById('chatUserInput');
+        const sendButton = document.getElementById('sendButton');
+        const imageAttachButton = document.getElementById('imageAttachButton');
+        const qModesButton = document.getElementById('qModesButton');
+        const moreOptionsButton = document.getElementById('moreOptionsButton');
+        const moreOptionsSidebar = document.getElementById('moreOptionsSidebar');
+        const aboutModal = document.getElementById('aboutModal');
+        const messageModal = document.getElementById('messageModal');
+        const toneModal = document.getElementById('toneModal');
+        const qModesSelectionModal = document.getElementById('qModesSelectionModal');
+        const imageFileInput = document.getElementById('imageFileInput');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const imageFileName = document.getElementById('imageFileName');
+        const removeImageButton = document.getElementById('removeImageButton');
+        const scrollToTopArrow = document.getElementById('scrollToTopArrow');
+        const scrollToBottomArrow = document.getElementById('scrollToBottomArrow');
+        
+        // App State
+        let currentUILanguage = 'ur';
+        let currentImageUploadData = { base64: null, mimeType: null };
+        let lastUserPrompt = '';
+        let localChatHistory = []; 
+        let unsubscribeChat; 
+        let isFirstLoad = true;
+        let audioCtx; 
+        let isAudioInitialized = false;
+        let isLoading = false; // <<< KEY STATE VARIABLE FOR LOADING
+
+        // Firebase State
+        let db, auth, userId, app;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'qai-chatbot-default';
+
+        // UI Text Translations
+        const uiTexts = {
+            ur: {
+                themeToggleTitle: "تھیم تبدیل کریں",
+                qModesShortcutTitle: "جوابی موڈ",
+                toneShortcutTitle: "جواب کا انداز",
+                uiLangToggleText: "اردو",
+                moreOptionsTitle: "مزید آپشنز",
+                suggestedQuestionsTitle: "کیا آپ کی مدد کر سکتا ہوں؟ 🤔",
+                welcomeMessage: "السلام علیکم! میں QAi ہوں، آپ کا ذہین اور تخلیقی معاون۔ میں آپ کے ہر سوال کا جواب دینے اور آپ کی مدد کرنے کے لیے حاضر ہوں۔ ✨",
+                copyAction: "کاپی کریں",
+                speakAction: "سنیں",
+                detailAction: "تفصیل",
+                summaryAction: "خلاصہ",
+                regenerateAction: "دوبارہ بنائیں",
+                copyQuestionAction: "سوال کاپی کریں",
+                qModesButtonText: "Q-Modes",
+                imageAttachButtonText: "تصویر",
+                sendButtonText: "بھیجیں",
+                inputPlaceholder: "اپنا پیغام یہاں لکھیں...",
+                imagePreviewAlt: "تصویر کا پیش نظارہ",
+                removeImageTitle: "تصویر ہٹائیں",
+                aboutModalTitle: "QAi (Query AI) کے بارے میں",
+                aboutModalCreator: "<strong>*QAi سید ساخر ہاشمی کی کاوش اور خدا کی توفیق سے بنایا گیا جدید Ai ہے*</strong>",
+                aboutModalP1: "QAi صرف ایک چیٹ بوٹ نہیں، بلکہ یہ ایک انقلابی مصنوعی ذہانت کا نظام ہے جو آپ کے ہر سوال کا جواب انتہائی تفصیل، دلچسپی، اور درستگی کے ساتھ فراہم کرنے کے لیے ڈیزائن کیا گیا ہے۔ اس کی خصوصیات اور انفرادیت اسے دیگر AI چیٹ بوٹس سے ممتاز کرتی ہیں:",
+                aboutModalP2: "ہمارا مقصد آپ کو ایک ایسا AI تجربہ فراہم کرنا ہے جو نہ صرف معلومات فراہم کرے بلکہ آپ کو حیران کر دے اور آپ کی سوچ کو وسعت دے۔ QAi آپ کے ساتھ ہر قدم پر ایک ذہین اور قابل اعتماد معاون کے طور پر موجود ہے۔ 🌟",
+                modalCloseButton: "بند کریں",
+                messageModalDefaultButton: "ٹھیک ہے",
+                toneModalTitle: "جواب کا انداز منتخب کریں",
+                toneAuto: "آٹو",
+                toneIslamic: "اسلامی",
+                tonePhilosophical: "فلسفیانہ",
+                toneScientific: "سائنسی",
+                toneAdbi: "ادبی",
+                toneHumorous: "مزاحیہ",
+                toneChildish: "بچگانہ",
+                toneMix: "مکس موڈ",
+                qModesModalTitle: "جوابی موڈ منتخب کریں",
+                qModeQuantumText: "کوانٹم موڈ (تفصیلی)",
+                qModeQuickText: "کوئیک موڈ (مختصر)",
+                sidebarTitle: "آپشنز",
+                sidebarAbout: "QAi کے بارے میں",
+                sidebarResponseLang: "جوابی زبان کی ترجیح:",
+                sidebarThemeToggle: "تھیم تبدیل کریں",
+                sidebarNewChat: "نئی گفتگو شروع کریں",
+                sidebarResponseTone: "جواب کا انداز",
+                sidebarCreativeWriting: "تخلیقی تحریر",
+                sidebarCopyChat: "پوری چیٹ کاپی کریں",
+                sidebarExportChat: "چیٹ ایکسپورٹ کریں (ٹیکسٹ)",
+                bottomStatusBarText: "QAi - آپ کا ذہین اور تخلیقی معاون",
+                copiedSuccessTitle: "کاپی ہو گیا",
+                copiedSuccessMessage: "متن کامیابی سے کلپ بورڈ پر کاپی ہو گیا ہے۔",
+                copiedErrorTitle: "کاپی نہیں ہوا",
+                copiedErrorMessage: "متن کاپی کرنے میں ناکامی۔",
+                ttsNotSupportedTitle: "سپورٹ نہیں ہے",
+                ttsNotSupportedMessage: "آپ کا براؤزر ٹیکسٹ ٹو اسپیچ کو سپورٹ نہیں کرتا۔",
+                emptyMessageTitle: "خالی پیغام",
+                emptyMessageContent: "برائے مہربانی کچھ لکھیں یا تصویر منسلک کریں۔ ✍️",
+                summaryRequestTitle: "خلاصہ",
+                summaryRequestMessage: "QAi خلاصہ تیار کر رہا ہے... 📝",
+                detailedRequestTitle: "تفصیلی جواب",
+                detailedRequestMessage: "QAi مزید تفصیلی جواب تیار کر رہا ہے... 📚",
+                regenerateFailTitle: "دوبارہ نہیں بنایا جا سکتا",
+                regenerateFailMessage: "دوبارہ بنانے کے لیے کوئی پچھلا سوال موجود نہیں ہے۔ 🔄",
+                regenerateRequestTitle: "دوبارہ بنائیں",
+                regenerateRequestMessage: "QAi جواب دوبارہ بنا رہا ہے... 🔄",
+                creativeIdeaTitle: "تخلیقی آئیڈیا",
+                creativeIdeaMessage: "QAi آپ کے لیے ایک تخلیقی تحریر کا آئیڈیا تیار کر رہا ہے... 💡",
+                toneSelectedTitle: "انداز منتخب",
+                toneSelectedMessage: (tone) => `جواب کا انداز: "${tone}" منتخب کیا گیا ہے۔ ✅`,
+                qModeSelectedTitle: "موڈ منتخب",
+                qModeSelectedMessage: (mode) => `جوابی موڈ: "${mode}" منتخب کیا گیا ہے۔ ✅`,
+                newChatStartedTitle: "نئی گفتگو",
+                newChatStartedMessage: "ایک نئی گفتگو شروع کی گئی ہے۔ 🚀",
+                invalidFileTitle: "غلط فائل",
+                invalidFileMessage: "براہ کرم ایک تصویر فائل منتخب کریں۔ 🖼️",
+                fileReadErrorTitle: "فائل پڑھنے میں خرابی",
+                fileReadErrorMessage: "تصویر کو پڑھنے میں مسئلہ پیش آیا۔ 😞",
+                chatExportedTitle: "ایکسپورٹ ہو گیا",
+                chatExportedMessage: "چیٹ ہسٹری کامیابی سے ایکسپورٹ ہو گئی ہے۔ 💾",
+                aiResponseLangChangedTitle: "جوابی زبان تبدیل",
+                aiResponseLangChangedMessage: (lang) => `QAi اب ${lang} میں جواب دے گا۔ 🗣️`,
+                uiLangPreferenceTitle: "UI زبان کی ترجیح",
+                uiLangPreferenceMessage: "براہ کرم سائیڈبار سے اپنی جوابی زبان منتخب کریں۔ یہ بٹن صرف UI کی زبان تبدیل کرتا ہے۔ 🌐",
+                scrollToTopTitle: "اوپر جائیں",
+                scrollToBottomTitle: "نیچے جائیں",
+                qaiTyping: "QAi ٹائپ کر رہا ہے",
+                errorGeneralTitle: "خرابی",
+                errorGeneralMessage: "معذرت، ایک خرابی پیش آگئی۔ براہ کرم اپنے انٹرنیٹ کنکشن کو چیک کریں یا بعد میں دوبارہ کوشش کریں۔ 😞",
+                unexpectedApiResponseTitle: "غیر متوقع جواب",
+                unexpectedApiResponseMessage: "معذرت، میں آپ کے سوال کا جواب نہیں دے سکا۔ براہ کرم دوبارہ کوشش کریں۔ 😔",
+                identityResponse: "میں **QAi (Query Ai)** ہوں، جسے **سید ساخر ہاشمی** نے اپنی کاوش، محنت اور تخلیقی صلاحیتوں کے نتیجے میں **گوگل کے وسیع ڈیٹا بیس** کی مدد سے ایک جدید، منفرد اور ممتاز AI کے طور پر بنایا ہے۔ ✨ انہوں نے ہی میرا نام (Query Ai)، فیچرز (جیسے مختلف جوابی انداز، تفصیلی اور مختصر جوابات، تصویر کی سمجھ)، اور ایپ کی ڈیزائننگ جیسے تمام پہلوؤں پر کام کیا ہے۔ میرا مقصد آپ کے ہر سوال کا **تفصیلی، دلچسپ، اور درست جواب** دینا ہے، چاہے وہ کسی بھی موضوع پر ہو۔ میں آپ کی سوچ کو وسعت دینے اور آپ کو حیران کرنے کے لیے بنایا گیا ہوں۔ 🚀",
+                photoQueryPlaceholder: "تصویر کے بارے میں اپنا سوال لکھیں... 📸",
+            },
+            en: {
+                themeToggleTitle: "Toggle Theme",
+                qModesShortcutTitle: "Response Mode",
+                toneShortcutTitle: "Response Tone",
+                uiLangToggleText: "EN",
+                moreOptionsTitle: "More Options",
+                suggestedQuestionsTitle: "How can I help you? 🤔",
+                welcomeMessage: "Hello! I am QAi, your intelligent and creative assistant. I am here to answer all your questions and assist you. ✨",
+                copyAction: "Copy",
+                speakAction: "Listen",
+                detailAction: "Detail",
+                summaryAction: "Summary",
+                regenerateAction: "Regenerate",
+                copyQuestionAction: "Copy Question",
+                qModesButtonText: "Q-Modes",
+                imageAttachButtonText: "Image",
+                sendButtonText: "Send",
+                inputPlaceholder: "Type your message here...",
+                imagePreviewAlt: "Image Preview",
+                removeImageTitle: "Remove Image",
+                aboutModalTitle: "About QAi (Query AI)",
+                aboutModalCreator: "<strong>*QAi is an advanced AI created through the efforts of Syed Sakhir Hashmi with the grace of God.*</strong>",
+                aboutModalP1: "QAi is not just a chatbot, but a revolutionary artificial intelligence system designed to provide extremely detailed, interesting, and accurate answers to every question. Its features and uniqueness distinguish it from other AI chatbots:",
+                aboutModalP2: "Our goal is to provide you with an AI experience that not only informs but also amazes you and expands your thinking. QAi is here with you every step of the way as an intelligent and reliable assistant. 🌟",
+                modalCloseButton: "Close",
+                messageModalDefaultButton: "OK",
+                toneModalTitle: "Select Response Tone",
+                toneAuto: "Auto",
+                toneIslamic: "Islamic",
+                tonePhilosophical: "Philosophical",
+                toneScientific: "Scientific",
+                toneAdbi: "Literary",
+                toneHumorous: "Humorous",
+                toneChildish: "Childish",
+                toneMix: "Mix Mode",
+                qModesModalTitle: "Select Response Mode",
+                qModeQuantumText: "Quantum Mode (Detailed)",
+                qModeQuickText: "Quick Mode (Concise)",
+                sidebarTitle: "Options",
+                sidebarAbout: "About QAi",
+                sidebarResponseLang: "Response Language:",
+                sidebarThemeToggle: "Toggle Theme",
+                sidebarNewChat: "Start New Chat",
+                sidebarResponseTone: "Response Tone",
+                sidebarCreativeWriting: "Creative Writing",
+                sidebarCopyChat: "Copy Entire Chat",
+                sidebarExportChat: "Export Chat (Text)",
+                bottomStatusBarText: "QAi - Your Intelligent and Creative Assistant",
+                copiedSuccessTitle: "Copied",
+                copiedSuccessMessage: "Text successfully copied to clipboard.",
+                copiedErrorTitle: "Copy Failed",
+                copiedErrorMessage: "Failed to copy text.",
+                ttsNotSupportedTitle: "Not Supported",
+                ttsNotSupportedMessage: "Your browser does not support text-to-speech.",
+                emptyMessageTitle: "Empty Message",
+                emptyMessageContent: "Please type something or attach an image. ✍️",
+                summaryRequestTitle: "Summary",
+                summaryRequestMessage: "QAi is preparing a summary... 📝",
+                detailedRequestTitle: "Detailed Answer",
+                detailedRequestMessage: "QAi is preparing a more detailed answer... 📚",
+                regenerateFailTitle: "Cannot Regenerate",
+                regenerateFailMessage: "No previous question to regenerate. 🔄",
+                regenerateRequestTitle: "Regenerate",
+                regenerateRequestMessage: "QAi is regenerating the answer... 🔄",
+                creativeIdeaTitle: "Creative Idea",
+                creativeIdeaMessage: "QAi is generating a creative writing idea for you... 💡",
+                toneSelectedTitle: "Tone Selected",
+                toneSelectedMessage: (tone) => `Response tone: "${tone}" selected. ✅`,
+                qModeSelectedTitle: "Mode Selected",
+                qModeSelectedMessage: (mode) => `Response mode: "${mode}" selected. ✅`,
+                newChatStartedTitle: "New Chat",
+                newChatStartedMessage: "A new chat has been started. 🚀",
+                invalidFileTitle: "Invalid File",
+                invalidFileMessage: "Please select an image file. 🖼️",
+                fileReadErrorTitle: "File Read Error",
+                fileReadErrorMessage: "There was an issue reading the image. 😞",
+                chatExportedTitle: "Exported",
+                chatExportedMessage: "Chat history successfully exported. 💾",
+                aiResponseLangChangedTitle: "Response Language Changed",
+                aiResponseLangChangedMessage: (lang) => `QAi will now respond in ${lang}. 🗣️`,
+                uiLangPreferenceTitle: "UI Language Preference",
+                uiLangPreferenceMessage: "Please select your response language from the sidebar. This button only changes the UI language. 🌐",
+                scrollToTopTitle: "Scroll to Top",
+                scrollToBottomTitle: "Scroll to Bottom",
+                qaiTyping: "QAi is typing",
+                errorGeneralTitle: "Error",
+                errorGeneralMessage: "Sorry, an error occurred. Please check your internet connection or try again later. 😞",
+                unexpectedApiResponseTitle: "Unexpected Response",
+                unexpectedApiResponseMessage: "Sorry, I couldn't answer your question. Please try again.😔",
+                identityResponse: "I am **QAi (Query Ai)**, uniquely and exceptionally created by **Syed Sakhir Hashmi** with his effort, hard work, and creativity, using **Google's vast database**. ✨ He worked on all aspects of my design, including my name (Query Ai), features (like different response tones, detailed/concise answers, image understanding), and app design. My purpose is to provide **detailed, interesting, and accurate answers** to all your questions, on any topic. I am designed to expand your thinking and amaze you. 🚀",
+                photoQueryPlaceholder: "Type your question about the image... 📸",
+            }
+        };
+
+        // --- Firebase Initialization and Auth ---
+        async function initializeFirebase() {
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        await setupChatListener();
+                    } else {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+                showMessageModal("Firebase Error", "Could not connect to the service. Please refresh the page.");
+            }
+        }
+
+        // --- Chat Management (Firestore) ---
+        function getChatDocRef() {
+            if (!userId) return null;
+            return doc(db, "artifacts", appId, "users", userId, "qai_chats", "current_chat");
+        }
+
+        async function setupChatListener() {
+            const chatDocRef = getChatDocRef();
+            if (!chatDocRef) return;
+
+            if (unsubscribeChat) unsubscribeChat();
+
+            unsubscribeChat = onSnapshot(chatDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const chatData = docSnap.data();
+                    renderChat(chatData.messages || []);
+                    setAIResponseLanguage(chatData.language || 'ur', false);
+                    setSelectedTone(chatData.tone || 'auto', false);
+                    setCurrentQMode(chatData.qMode || 'quantum', false);
+                    applyTheme(chatData.theme || 'dark');
+
+                    if (isFirstLoad && (!chatData.messages || chatData.messages.length <= 1)) {
+                        toneModal.classList.add('show');
+                        isFirstLoad = false;
+                    }
+                } else {
+                    createNewChatInFirestore();
+                    if (isFirstLoad) {
+                        toneModal.classList.add('show');
+                        isFirstLoad = false;
+                    }
+                }
+            }, (error) => {
+                console.error("Error listening to chat document:", error);
+                showMessageModal("Connection Error", "Failed to sync chat. Please check your connection.");
+            });
+        }
+
+        async function createNewChatInFirestore() {
+            const chatDocRef = getChatDocRef();
+            if (!chatDocRef) return;
+
+            const initialMessage = {
+                text: uiTexts[currentUILanguage].welcomeMessage,
+                sender: 'ai',
+                timestamp: new Date()
+            };
+
+            await setDoc(chatDocRef, {
+                messages: [initialMessage],
+                createdAt: serverTimestamp(),
+                language: 'ur',
+                tone: 'auto',
+                qMode: 'quantum',
+                theme: 'dark'
+            });
+        }
+        
+        async function handleNewChat(event) {
+            event.preventDefault();
+            const chatDocRef = getChatDocRef();
+            if (!chatDocRef) return;
+            await createNewChatInFirestore();
+            hideMoreOptionsSidebar();
+            showMessageModal(uiTexts[currentUILanguage].newChatStartedTitle, uiTexts[currentUILanguage].newChatStartedMessage);
+        }
+
+        async function addMessageToFirestore(message) {
+            const chatDocRef = getChatDocRef();
+            if (!chatDocRef) return;
+            await updateDoc(chatDocRef, {
+                messages: arrayUnion(message),
+                lastUpdated: serverTimestamp()
+            });
+        }
+        
+        async function updateChatSettingsInFirestore(settings) {
+            const chatDocRef = getChatDocRef();
+            if (!chatDocRef) return;
+            await updateDoc(chatDocRef, settings);
+        }
+
+        // --- UI Rendering ---
+        function renderChat(messages) {
+            chatMessages.innerHTML = ''; 
+            localChatHistory = [];
+
+            if (messages.length <= 1) {
+                const sqContainer = document.createElement('div');
+                sqContainer.className = 'suggested-questions-container';
+                sqContainer.innerHTML = `<h3 id="suggestedQuestionsTitle">${uiTexts[currentUILanguage].suggestedQuestionsTitle}</h3><div class="suggested-questions-grid"></div>`;
+                chatMessages.appendChild(sqContainer);
+                const grid = sqContainer.querySelector('.suggested-questions-grid');
+                const staticButtons = [
+                    { ur: "بلیک ہولز کیسے بنتے ہیں اور ان کی خصوصیات کیا ہیں؟ 🌌", en: "How are black holes formed and what are their properties? 🌌" },
+                    { ur: "اسلام میں زکوٰۃ کی اہمیت اور اس کے بنیادی اصول کیا ہیں؟ 🕌", en: "What is the importance of Zakat in Islam and its basic principles? 🕌"},
+                    { ur: "انسانی دماغ میں یادداشت کیسے کام کرتی ہے اور اسے بہتر بنانے کے طریقے کیا ہیں؟ 🧠", en: "How does memory work in the human brain and what are the ways to improve it? 🧠" },
+                    { ur: "مستقبل میں انسانیت کے لیے سب سے بڑا چیلنج کیا ہو گا اور ہم اس کا مقابلہ کیسے کر سکتے ہیں؟ 🌍", en: "What will be the biggest challenge for humanity in the future and how can we face it? 🌍" }
+                ];
+                staticButtons.forEach(data => {
+                    const newButton = document.createElement('button');
+                    newButton.className = 'suggested-question-button';
+                    newButton.type = 'button';
+                    newButton.dataset.questionUr = data.ur;
+                    newButton.dataset.questionEn = data.en;
+                    newButton.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        chatUserInput.value = currentUILanguage === 'en' ? data.en : data.ur;
+                        sendMessage();
+                    });
+                    grid.appendChild(newButton);
+                });
+                updateSuggestedQuestionButtonText();
+            }
+
+            let lastAIMessageElement = null;
+            messages.forEach(msg => {
+                const messageElement = addMessageToUI(msg.text, msg.sender, msg.imageUrl, msg.originalPrompt);
+                if (msg.sender === 'ai') lastAIMessageElement = messageElement;
+                
+                // Build local chat history for text-only conversations
+                if (!msg.imageUrl) {
+                    if (msg.sender === 'user') {
+                        localChatHistory.push({ role: "user", parts: [{ text: msg.text }] });
+                    } else if (msg.sender === 'ai' && msg.text !== uiTexts.ur.welcomeMessage && msg.text !== uiTexts.en.welcomeMessage) {
+                        localChatHistory.push({ role: "model", parts: [{ text: msg.text }] });
+                    }
+                }
+            });
+            
+            if (isLoading) {
+                appendLoadingIndicator();
+            }
+            
+            if (!isLoading) {
+                const lastMessage = messages[messages.length - 1];
+                if (lastAIMessageElement && lastMessage && lastMessage.sender === 'ai') {
+                    setTimeout(() => {
+                        lastAIMessageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100); 
+                } 
+                else {
+                    scrollToBottom();
+                }
+            }
+        }
+
+        function addMessageToUI(text, sender, imageUrl = null, originalPrompt = '') {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'ai-message');
+            messageDiv.dataset.messageText = text;
+            messageDiv.dataset.originalPrompt = originalPrompt;
+
+            let formattedText = text
+                .replace(/^#\s*(.*)$/gm, '<h1>$1</h1>')
+                .replace(/^##\s*(.*)$/gm, '<h2>$1</h2>')
+                .replace(/^###\s*(.*)$/gm, '<h3>$1</h3>')
+                .replace(/^####\s*(.*)$/gm, '<h4>$1</h4>')
+                .replace(/^#####\s*(.*)$/gm, '<h5>$1</h5>')
+                .replace(/^######\s*(.*)$/gm, '<h6>$1</h6>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+            const lines = formattedText.split('\n');
+            let htmlContent = '';
+            let inList = false;
+            let listType = '';
+
+            lines.forEach(line => {
+                const trimmedLine = line.trim();
+                if (trimmedLine.startsWith('<h')) {
+                    if (inList) { htmlContent += `</${listType}>`; inList = false; }
+                    htmlContent += trimmedLine;
+                } else if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+                    if (!inList || listType !== 'ul') {
+                        if (inList) htmlContent += `</${listType}>`;
+                        htmlContent += '<ul>';
+                        inList = true;
+                        listType = 'ul';
+                    }
+                    htmlContent += `<li>${trimmedLine.substring(2).trim()}</li>`;
+                } else if (trimmedLine.match(/^\d+\.\s/)) {
+                    if (!inList || listType !== 'ol') {
+                        if (inList) htmlContent += `</${listType}>`;
+                        htmlContent += '<ol>';
+                        inList = true;
+                        listType = 'ol';
+                    }
+                    htmlContent += `<li>${trimmedLine.substring(trimmedLine.indexOf('.') + 1).trim()}</li>`;
+                } else if (trimmedLine) {
+                    if (inList) { htmlContent += `</${listType}>`; inList = false; }
+                    htmlContent += `<p>${trimmedLine}</p>`;
+                }
+            });
+            if (inList) htmlContent += `</${listType}>`;
+            
+            messageDiv.innerHTML = htmlContent + (imageUrl ? `<img src="${imageUrl}" alt="${uiTexts[currentUILanguage].imagePreviewAlt}" class="rounded-lg mt-2 max-w-full h-auto">` : '');
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.classList.add('message-actions');
+
+            if (sender === 'ai') {
+                actionsDiv.innerHTML = `
+                    <button type="button" class="copy-button" title="${uiTexts[currentUILanguage].copyAction}"><i class="fas fa-copy"></i> <span class="action-text">${uiTexts[currentUILanguage].copyAction}</span></button>
+                    <button type="button" class="speak-button" title="${uiTexts[currentUILanguage].speakAction}"><i class="fas fa-volume-up"></i> <span class="action-text">${uiTexts[currentUILanguage].speakAction}</span></button>
+                    <button type="button" class="detail-button" title="${uiTexts[currentUILanguage].detailAction}"><i class="fas fa-book-open"></i> <span class="action-text">${uiTexts[currentUILanguage].detailAction}</span></button>
+                    <button type="button" class="summary-button" title="${uiTexts[currentUILanguage].summaryAction}"><i class="fas fa-file-alt"></i> <span class="action-text">${uiTexts[currentUILanguage].summaryAction}</span></button>
+                    <button type="button" class="regenerate-button" title="${uiTexts[currentUILanguage].regenerateAction}"><i class="fas fa-redo"></i> <span class="action-text">${uiTexts[currentUILanguage].regenerateAction}</span></button>
+                `;
+                actionsDiv.querySelector('.copy-button').onclick = (e) => { e.preventDefault(); copyTextToClipboard(messageDiv.dataset.messageText); };
+                actionsDiv.querySelector('.speak-button').onclick = (e) => { e.preventDefault(); speakText(text, document.querySelector('.language-option.selected')?.dataset.lang || 'ur'); };
+                actionsDiv.querySelector('.detail-button').onclick = (e) => { e.preventDefault(); getDetailedAnswer(originalPrompt || text); };
+                actionsDiv.querySelector('.summary-button').onclick = (e) => { e.preventDefault(); getSummary(text); };
+                actionsDiv.querySelector('.regenerate-button').onclick = (e) => { e.preventDefault(); regenerateAnswer(originalPrompt || lastUserPrompt); };
+            } else {
+                actionsDiv.style.justifyContent = 'flex-start';
+                actionsDiv.innerHTML = `<button type="button" class="copy-button" title="${uiTexts[currentUILanguage].copyQuestionAction}"><i class="fas fa-copy"></i> <span class="action-text">${uiTexts[currentUILanguage].copyQuestionAction}</span></button>`;
+                actionsDiv.querySelector('.copy-button').onclick = (e) => { e.preventDefault(); copyTextToClipboard(messageDiv.dataset.messageText); };
+            }
+            messageDiv.appendChild(actionsDiv);
+            chatMessages.appendChild(messageDiv);
+            return messageDiv;
+        }
+
+        // --- Gemini API Call ---
+        async function sendToGemini(promptText, base64ImageData = null, imageMimeType = null, isRegenerate = false, actionType = '') {
+            try {
+                // **IDENTITY CHECK FIX**: Added more keywords for better detection.
+                const lowerCasePrompt = promptText.toLowerCase().trim();
+                const identityKeywordsUrdu = ['کون ہو', 'نام کیا ہے', 'کس نے بنایا', 'تعارف', 'تمہارا مقصد', 'کیا کر سکتے ہو', 'تم کیا ہو', 'اپنے بارے میں بتاؤ', 'آپ کون ہیں', 'آپ کا نام کیا ہے', 'آپ کو کس نے بنایا'];
+                const identityKeywordsEnglish = ['who are you', 'what is your name', 'who made you', 'who created you', 'introduce yourself', 'your purpose', 'what can you do', 'what are you', 'tell me about yourself'];
+                const currentKeywords = (document.querySelector('.language-option.selected')?.dataset.lang || 'ur').startsWith('ur') ? identityKeywordsUrdu : identityKeywordsEnglish;
+                const isIdentityQuery = currentKeywords.some(keyword => lowerCasePrompt.includes(keyword));
+
+                if (isIdentityQuery && !isRegenerate && actionType === '') {
+                    const identityRes = uiTexts[currentUILanguage].identityResponse;
+                    hideLoadingIndicator();
+                    playNotificationSound();
+                    const aiMessage = { text: identityRes, sender: 'ai', timestamp: new Date(), originalPrompt: promptText };
+                    await addMessageToFirestore(aiMessage);
+                    enableInput();
+                    return;
+                }
+
+                let userParts = [];
+                let instruction = '';
+                const lang = document.querySelector('.language-option.selected')?.dataset.lang || 'ur';
+                const tone = document.querySelector('.tone-option-button.selected')?.dataset.tone || 'auto';
+                const qMode = document.querySelector('.q-modes-option-button.selected')?.dataset.qmode || 'quantum';
+                
+                let outputLanguageInstruction = '';
+                if (lang === 'ur') outputLanguageInstruction = "اردو میں جواب دیں۔";
+                else if (lang === 'en') outputLanguageInstruction = "Answer in English.";
+                else if (lang === 'ur-roman') outputLanguageInstruction = "رومن اردو میں جواب دیں۔ (Answer in Roman Urdu)";
+                
+                let baseInstructions = lang === 'en' 
+                    ? "Do not include greetings like 'Hello'. Use emojis appropriately and abundantly. For formatting, use Markdown: `#` for main headings, `##` for subheadings, and `**like this**` for bolding key points. Use numbering for lists. Headings (H1) should be orange, subheadings (H2-H6) should be blue, and key points/strong text should be pink." 
+                    : "جواب میں 'السلام علیکم' جیسے سلام شامل نہ کریں۔ ایموجیز کا مناسب اور بھرپور استعمال کریں۔ فارمیٹنگ کے لیے مارک ڈاؤن استعمال کریں: `#` بڑی ہیڈنگ کے لیے، `##` سب ہیڈنگ کے لیے، اور اہم نکات کو نمایاں کرنے کے لیے `**اس طرح**` استعمال کریں۔ فہرستوں کے لیے نمبرنگ کا استعمال کریں۔ ہیڈنگز (H1) نارنجی، سب ہیڈنگز (H2-H6) نیلی، اور اہم نکات/بولڈ ٹیکسٹ گلابی ہونا چاہیے۔";
+
+                // Construct instructions based on action type
+                if (actionType === 'summary') {
+                    instruction = lang === 'en' ? `Summarize this text concisely. ${baseInstructions} 📝` : `اس متن کا خلاصہ اردو میں کریں۔ ${baseInstructions} 📝`;
+                } else if (qMode === 'quick') {
+                    instruction = lang === 'en' ? `Provide a very short, direct, and concise answer. ${baseInstructions} ✅` : `انتہائی مختصر، براہ راست، اور جامع جواب دیں۔ ${baseInstructions} ✅`;
+                } else { // Quantum, detailed, creative, etc.
+                    instruction = lang === 'en' ? `Provide an exceptionally detailed, insightful, and comprehensive answer. Analyze from every angle. Anticipate and address all possible follow-up questions. ${baseInstructions} 🚀` : `ایک بہترین، درست، دلچسپ اور جامع جواب دیں۔ ہر ممکنہ نقطہ کو شامل کریں۔ ممکنہ اضافی سوالات، شکوک و شبہات، اعتراضات کو پہلے سے بھانپ کر انہیں واضح اور درست طریقے سے حل کریں۔ ${baseInstructions} 🚀`;
+                }
+                 if (base64ImageData) {
+                    instruction += lang === 'en' ? " Describe the image and answer my question." : " تصویر بیان کریں اور میرے سوال کا جواب دیں۔";
+                }
+
+                // Add tone instructions
+                if (tone !== 'auto') {
+                    const toneInstruction = {
+                        islamic: lang === 'en' ? " Use a strictly Islamic, accurate, and comprehensive style with authentic references." : "ایک درست اور بھرپور اسلامی انداز میں مستند حوالوں کے ساتھ جواب دیں۔",
+                        philosophical: lang === 'en' ? " Use a deep, profound, and analytical philosophical tone." : "گہرا، بصیرت افروز اور تجزیاتی فلسفیانہ انداز میں پیش کریں۔",
+                        scientific: lang === 'en' ? " Use a strictly scientific tone, with precise data and logical reasoning." : "سختی سے سائنسی انداز میں پیش کریں۔ درست ڈیٹا، اور منطقی استدلال کا استعمال کریں۔",
+                        adbi: lang === 'en' ? " Use a rich, eloquent, and literary (adbi) tone." : "ایک بھرپور، فصیح اور ادبی انداز میں پیش کریں۔",
+                        humorous: lang === 'en' ? " Use a genuinely witty, extremely humorous, and engaging tone." : "ایک حقیقی ہوشیار، انتہائی مزاحیہ اور دلکش انداز میں پیش کریں۔",
+                        childish: lang === 'en' ? " Use a simple, innocent, and playful childish tone." : "ایک سادہ، معصوم اور کھیل کود والے بچگانہ انداز میں پیش کریں۔",
+                        mix: lang === 'en' ? " Provide a comprehensive answer from various relevant aspects (e.g., Islamic, philosophical, scientific)." : "مختلف مناسب پہلوؤں (جیسے اسلامی، فلسفیانہ، سائنسی) سے ایک جامع جواب دیں۔"
+                    };
+                    instruction += ` ${toneInstruction[tone] || ''}`;
+                }
+
+                userParts.push({ text: `${outputLanguageInstruction} ${instruction}\n\n${promptText}` });
+
+                if (base64ImageData && imageMimeType) {
+                    userParts.push({ inlineData: { mimeType: imageMimeType, data: base64ImageData } });
+                }
+
+                // **PHOTO FIX**: Isolate multimodal requests from chat history to prevent potential conflicts.
+                let payloadContents;
+                if (base64ImageData) {
+                    // For image queries, send only the current prompt without history.
+                    payloadContents = [{ role: "user", parts: userParts }];
+                } else {
+                    // For text-only queries, include the chat history.
+                    payloadContents = [...localChatHistory, { role: "user", parts: userParts }];
+                }
+
+                const payload = { contents: payloadContents };
+                const apiKey = "";
+                // Using a model that explicitly supports multimodal input.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const result = await response.json();
+                
+                if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
+                    const aiResponseText = result.candidates[0].content.parts[0].text;
+                    const aiMessage = { text: aiResponseText, sender: 'ai', timestamp: new Date(), originalPrompt: promptText };
+                    await addMessageToFirestore(aiMessage);
+                } else {
+                    const errorMessage = { text: uiTexts[currentUILanguage].unexpectedApiResponseMessage, sender: 'ai', timestamp: new Date() };
+                    await addMessageToFirestore(errorMessage);
+                    console.error("Unexpected API response:", result);
+                }
+            } catch (error) {
+                const errorMessage = { text: uiTexts[currentUILanguage].errorGeneralMessage, sender: 'ai', timestamp: new Date() };
+                await addMessageToFirestore(errorMessage);
+                console.error("Error calling Gemini API:", error);
+            } finally {
+                hideLoadingIndicator();
+                playNotificationSound(); // Plays sound on every response (success or error).
+                enableInput();
+            }
+        }
+
+        // --- Event Handlers & UI Logic ---
+        async function sendMessage() {
+            initializeAudio(); 
+            const prompt = chatUserInput.value.trim();
+            if (prompt === '' && !currentImageUploadData.base64) {
+                showMessageModal(uiTexts[currentUILanguage].emptyMessageTitle, uiTexts[currentUILanguage].emptyMessageContent);
+                return;
+            }
+
+            disableInput();
+            showLoadingIndicator(); 
+            
+            const userMessage = {
+                text: prompt,
+                sender: 'user',
+                timestamp: new Date(),
+                imageUrl: currentImageUploadData.base64 ? `data:${currentImageUploadData.mimeType};base64,${currentImageUploadData.base64}` : null
+            };
+            
+            lastUserPrompt = prompt;
+            await addMessageToFirestore(userMessage);
+            
+            await sendToGemini(prompt, currentImageUploadData.base64, currentImageUploadData.mimeType);
+            
+            chatUserInput.value = '';
+            currentImageUploadData = { base64: null, mimeType: null };
+            chatUserInput.placeholder = uiTexts[currentUILanguage].inputPlaceholder;
+            imagePreviewContainer.classList.add('hidden');
+            imageFileInput.value = '';
+        }
+        
+        function copyTextToClipboard(text) {
+            const tempTextArea = document.createElement('textarea');
+            let cleanedText = text
+                .replace(/^#+\s/gm, '')
+                .replace(/\*\*(.*?)\*\*/g, '$1')
+                .replace(/\*(.*?)\*/g, '$1')
+                .replace(/_([^_]+)_/g, '$1')
+                .replace(/^-+\s/gm, '')
+                .replace(/^\d+\.\s/gm, '')
+                .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+                .replace(/!\[(.*?)\]\(.*?\)/g, '$1')
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<[^>]*>/g, '');
+
+            tempTextArea.value = cleanedText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showMessageModal(uiTexts[currentUILanguage].copiedSuccessTitle, uiTexts[currentUILanguage].copiedSuccessMessage);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                showMessageModal(uiTexts[currentUILanguage].copiedErrorTitle, uiTexts[currentUILanguage].copiedErrorMessage);
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
+        }
+
+        function speakText(text, langCode) {
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                const cleanText = text.replace(/#+\s/g, '').replace(/\*\*/g, '');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = langCode === 'ur-roman' ? 'ur' : langCode;
+                speechSynthesis.speak(utterance);
+            } else {
+                showMessageModal(uiTexts[currentUILanguage].ttsNotSupportedTitle, uiTexts[currentUILanguage].ttsNotSupportedMessage);
+            }
+        }
+        
+        async function getSummary(textToSummarize) {
+            showMessageModal(uiTexts[currentUILanguage].summaryRequestTitle, uiTexts[currentUILanguage].summaryRequestMessage);
+            await sendToGemini(textToSummarize, null, null, false, 'summary');
+        }
+
+        async function getDetailedAnswer(originalPrompt) {
+            showMessageModal(uiTexts[currentUILanguage].detailedRequestTitle, uiTexts[currentUILanguage].detailedRequestMessage);
+            await sendToGemini(originalPrompt, null, null, false, 'detailed');
+        }
+
+        async function regenerateAnswer(promptToRegenerate) {
+            const actualPromptToRegen = promptToRegenerate || lastUserPrompt;
+            if (!actualPromptToRegen) {
+                showMessageModal(uiTexts[currentUILanguage].regenerateFailTitle, uiTexts[currentUILanguage].regenerateFailMessage);
+                return;
+            }
+            disableInput();
+            showLoadingIndicator();
+            showMessageModal(uiTexts[currentUILanguage].regenerateRequestTitle, uiTexts[currentUILanguage].regenerateRequestMessage);
+            await sendToGemini(actualPromptToRegen, null, null, true);
+        }
+
+        async function handleCreativeWriting(event) {
+            event.preventDefault();
+            hideMoreOptionsSidebar();
+            disableInput();
+            showLoadingIndicator();
+            const creativePrompt = currentUILanguage === 'en' ? "Need a creative idea? ✍️" : "تخلیقی آئیڈیا؟ ✍️";
+            const userMessage = { text: creativePrompt, sender: 'user', timestamp: new Date() };
+            await addMessageToFirestore(userMessage);
+            showMessageModal(uiTexts[currentUILanguage].creativeIdeaTitle, uiTexts[currentUILanguage].creativeIdeaMessage);
+            await sendToGemini("Creative writing idea", null, null, false, 'creative_prompt');
+        }
+
+        async function setAIResponseLanguage(lang, showModal = true) {
+            document.querySelectorAll('.language-option').forEach(btn => btn.classList.toggle('selected', btn.dataset.lang === lang));
+            await updateChatSettingsInFirestore({ language: lang });
+            if (showModal) {
+                showMessageModal(uiTexts[currentUILanguage].aiResponseLangChangedTitle, uiTexts[currentUILanguage].aiResponseLangChangedMessage(document.querySelector(`.language-option[data-lang="${lang}"]`).textContent));
+            }
+        }
+        
+        async function setSelectedTone(tone, showModal = true) {
+            document.querySelectorAll('.tone-option-button').forEach(btn => btn.classList.toggle('selected', btn.dataset.tone === tone));
+            await updateChatSettingsInFirestore({ tone: tone });
+            if (showModal) {
+                const toneName = uiTexts[currentUILanguage][`tone${tone.charAt(0).toUpperCase() + tone.slice(1)}`] || tone;
+                showMessageModal(uiTexts[currentUILanguage].toneSelectedTitle, uiTexts[currentUILanguage].toneSelectedMessage(toneName));
+                toneModal.classList.remove('show');
+            }
+        }
+        
+        async function setCurrentQMode(qMode, showModal = true) {
+            document.querySelectorAll('.q-modes-option-button').forEach(btn => btn.classList.toggle('selected', btn.dataset.qmode === qMode));
+            await updateChatSettingsInFirestore({ qMode: qMode });
+            if (showModal) {
+                const modeName = document.querySelector(`.q-modes-option-button[data-qmode="${qMode}"]`).textContent;
+                showMessageModal(uiTexts[currentUILanguage].qModeSelectedTitle, uiTexts[currentUILanguage].qModeSelectedMessage(modeName));
+                qModesSelectionModal.classList.remove('show');
+            }
+            const qModeShortText = qMode === 'quick' ? ` (${uiTexts[currentUILanguage].qModeQuickText.split('(')[1].replace(')','')})` : '';
+            document.getElementById('qModesButtonText').textContent = uiTexts[currentUILanguage].qModesButtonText + qModeShortText;
+        }
+
+        // --- Theme Toggle Functionality ---
+        function applyTheme(theme) {
+            const body = document.body;
+            const themeToggleIcon = document.querySelector('#themeToggleOption i');
+            const statusBarIcon = document.querySelector('#themeToggleStatusBarButton i');
+            if (theme === 'light') {
+                body.classList.add('light-theme');
+                [themeToggleIcon, statusBarIcon].forEach(icon => {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                });
+            } else {
+                body.classList.remove('light-theme');
+                [themeToggleIcon, statusBarIcon].forEach(icon => {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                });
+            }
+        }
+
+        async function toggleTheme(event) {
+            event.preventDefault();
+            const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(newTheme);
+            await updateChatSettingsInFirestore({ theme: newTheme });
+        }
+        
+        // --- Utility Functions ---
+        function scrollToBottom() { chatMessages.scrollTop = chatMessages.scrollHeight; }
+        function scrollToTop() { chatMessages.scrollTop = 0; }
+        function showMessageModal(title, content) {
+            document.getElementById('messageModalTitle').textContent = title;
+            document.getElementById('messageModalContent').textContent = content;
+            document.getElementById('messageModalCloseButton').textContent = uiTexts[currentUILanguage].messageModalDefaultButton;
+            messageModal.classList.add('show');
+        }
+        function hideMessageModal() { messageModal.classList.remove('show'); }
+        
+        function showLoadingIndicator() {
+            isLoading = true;
+            if (!document.getElementById('loadingIndicator')) {
+                appendLoadingIndicator();
+            }
+        }
+
+        function appendLoadingIndicator() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loadingIndicator';
+            loadingDiv.className = 'loading-indicator';
+            // **LOADING INDICATOR FIX**: Replaced with new Quantum Atom animation.
+            loadingDiv.innerHTML = `
+                <div class="quantum-atom">
+                    <div class="electron-path"><div class="electron"></div></div>
+                    <div class="electron-path"><div class="electron"></div></div>
+                    <div class="electron-path"><div class="electron"></div></div>
+                    <div class="nucleus"></div>
+                </div>
+                <p>${uiTexts[currentUILanguage].qaiTyping}<span class="dots"></span></p>`;
+            chatMessages.appendChild(loadingDiv);
+            scrollToBottom(); 
+        }
+
+        function hideLoadingIndicator() { 
+            isLoading = false;
+            document.getElementById('loadingIndicator')?.remove(); 
+        }
+        
+        function disableInput() {
+            chatUserInput.disabled = true;
+            [sendButton, imageAttachButton, qModesButton].forEach(btn => btn.disabled = true);
+        }
+        function enableInput() {
+            chatUserInput.disabled = false;
+            [sendButton, imageAttachButton, qModesButton].forEach(btn => btn.disabled = false);
+        }
+
+        // --- Web Audio API for Notification Sound ---
+        function initializeAudio() {
+            if (isAudioInitialized) return;
+            try {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                isAudioInitialized = true;
+            } catch (e) {
+                console.warn('Web Audio API is not supported in this browser');
+            }
+        }
+
+        function playNotificationSound() {
+            if (!isAudioInitialized) initializeAudio();
+            if (!audioCtx || audioCtx.state !== 'running') return;
+            
+            // **BEEP SOUND FIX**: Increased volume and made it a two-tone beep.
+            const now = audioCtx.currentTime;
+            const gainNode = audioCtx.createGain();
+            gainNode.connect(audioCtx.destination);
+            gainNode.gain.setValueAtTime(0.4, now); // Louder volume
+            
+            const osc1 = audioCtx.createOscillator();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(880, now); // First tone
+            osc1.connect(gainNode);
+            osc1.start(now);
+            osc1.stop(now + 0.1);
+
+            const osc2 = audioCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(1046.50, now + 0.1); // Second, higher tone
+            osc2.connect(gainNode);
+            osc2.start(now + 0.1);
+            osc2.stop(now + 0.2);
+
+            gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.5);
+        }
+        
+        // --- Event Listeners ---
+        function addAllEventListeners() {
+            sendButton.addEventListener('click', sendMessage);
+            chatUserInput.addEventListener('keypress', (event) => {
+                 if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+            imageAttachButton.addEventListener('click', (e) => { e.preventDefault(); imageFileInput.click(); });
+            imageFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    if (!file.type.startsWith('image/')) {
+                        showMessageModal(uiTexts[currentUILanguage].invalidFileTitle, uiTexts[currentUILanguage].invalidFileMessage);
+                        imageFileInput.value = '';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        currentImageUploadData.base64 = e.target.result.split(',')[1];
+                        currentImageUploadData.mimeType = file.type;
+                        imagePreview.src = e.target.result;
+                        imageFileName.textContent = file.name;
+                        imagePreviewContainer.classList.remove('hidden');
+                        chatUserInput.placeholder = uiTexts[currentUILanguage].photoQueryPlaceholder;
+                    };
+                    reader.onerror = () => showMessageModal(uiTexts[currentUILanguage].fileReadErrorTitle, uiTexts[currentUILanguage].fileReadErrorMessage);
+                    reader.readAsDataURL(file);
+                }
+            });
+            removeImageButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                currentImageUploadData = { base64: null, mimeType: null };
+                imagePreviewContainer.classList.add('hidden');
+                imageFileInput.value = '';
+                chatUserInput.placeholder = uiTexts[currentUILanguage].inputPlaceholder;
+            });
+            
+            // Sidebar and Modal Toggles
+            moreOptionsButton.addEventListener('click', (e) => { e.preventDefault(); moreOptionsSidebar.classList.add('show'); });
+            document.getElementById('sidebarCloseButton').addEventListener('click', (e) => { e.preventDefault(); hideMoreOptionsSidebar(); });
+            document.getElementById('aboutOption').addEventListener('click', (e) => { e.preventDefault(); aboutModal.classList.add('show'); hideMoreOptionsSidebar(); });
+            document.getElementById('responseToneOption').addEventListener('click', (e) => { e.preventDefault(); hideMoreOptionsSidebar(); toneModal.classList.add('show'); });
+            qModesButton.addEventListener('click', (e) => { e.preventDefault(); qModesSelectionModal.classList.add('show'); });
+            document.getElementById('qModesShortcutStatusBarButton').addEventListener('click', (e) => { e.preventDefault(); qModesSelectionModal.classList.add('show'); });
+            document.getElementById('toneShortcutStatusBarButton').addEventListener('click', (e) => { e.preventDefault(); toneModal.classList.add('show'); });
+
+            // Modal Close Buttons
+            aboutModal.querySelector('.modal-close-button').addEventListener('click', (e) => { e.preventDefault(); aboutModal.classList.remove('show'); });
+            messageModal.querySelector('.modal-close-button').addEventListener('click', (e) => { e.preventDefault(); hideMessageModal(); });
+            toneModal.querySelector('.modal-close-button').addEventListener('click', (e) => { e.preventDefault(); toneModal.classList.remove('show'); });
+            qModesSelectionModal.querySelector('.modal-close-button').addEventListener('click', (e) => { e.preventDefault(); qModesSelectionModal.classList.remove('show'); });
+
+            // Sidebar Options
+            document.getElementById('newChatOption').addEventListener('click', handleNewChat);
+            document.getElementById('themeToggleOption').addEventListener('click', toggleTheme);
+            document.getElementById('themeToggleStatusBarButton').addEventListener('click', toggleTheme);
+            document.getElementById('creativeWritingOption').addEventListener('click', handleCreativeWriting);
+            
+            // Option Selections (Tone, Q-Mode, Language)
+            document.querySelectorAll('.tone-option-button').forEach(button => {
+                button.addEventListener('click', (e) => { e.preventDefault(); setSelectedTone(button.dataset.tone); });
+            });
+            document.querySelectorAll('.q-modes-option-button').forEach(button => {
+                button.addEventListener('click', (e) => { e.preventDefault(); setCurrentQMode(button.dataset.qmode); });
+            });
+            document.querySelector('.language-options-container').addEventListener('click', (event) => {
+                if (event.target.classList.contains('language-option')) {
+                    event.preventDefault();
+                    setAIResponseLanguage(event.target.dataset.lang);
+                }
+            });
+
+            // Other UI
+            scrollToTopArrow.addEventListener('click', (e) => { e.preventDefault(); scrollToTop(); });
+            scrollToBottomArrow.addEventListener('click', (e) => { e.preventDefault(); scrollToBottom(); });
+            chatMessages.addEventListener('scroll', () => {
+                scrollToTopArrow.classList.toggle('show', chatMessages.scrollTop > 100);
+                scrollToBottomArrow.classList.toggle('show', chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight > 5 && chatMessages.scrollHeight > chatMessages.clientHeight);
+            });
+            document.addEventListener('click', (event) => {
+                if (moreOptionsSidebar.classList.contains('show') && !moreOptionsSidebar.contains(event.target) && !moreOptionsButton.contains(event.target)) {
+                    hideMoreOptionsSidebar();
+                }
+            });
+            document.getElementById('uiLanguageToggleButton').addEventListener('click', (e) => {
+                e.preventDefault();
+                currentUILanguage = currentUILanguage === 'ur' ? 'en' : 'ur';
+                updateUILanguage();
+            });
+        }
+        
+        function hideMoreOptionsSidebar() {
+            moreOptionsSidebar.classList.remove('show');
+        }
+        
+        function updateUILanguage() {
+            const lang = currentUILanguage;
+            document.documentElement.lang = lang === 'en' ? 'en' : 'ur';
+            document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+            
+            // Update all titles and text content
+            document.getElementById('themeToggleStatusBarButton').title = uiTexts[lang].themeToggleTitle;
+            document.getElementById('qModesShortcutStatusBarButton').title = uiTexts[lang].qModesShortcutTitle;
+            document.getElementById('toneShortcutStatusBarButton').title = uiTexts[lang].toneShortcutTitle;
+            document.getElementById('uiLanguageToggleButton').textContent = uiTexts[lang].uiLangToggleText;
+            document.getElementById('uiLanguageToggleButton').title = lang === 'ur' ? "Switch to English UI" : "UI زبان اردو میں تبدیل کریں";
+            moreOptionsButton.title = uiTexts[lang].moreOptionsTitle;
+            
+            const sqTitle = document.getElementById('suggestedQuestionsTitle');
+            if (sqTitle) sqTitle.textContent = uiTexts[lang].suggestedQuestionsTitle;
+            updateSuggestedQuestionButtonText();
+            
+            document.getElementById('qModesButtonText').textContent = uiTexts[lang].qModesButtonText; // Will be updated by state change
+            document.getElementById('imageAttachButtonText').textContent = uiTexts[lang].imageAttachButtonText;
+            sendButton.querySelector('span').textContent = uiTexts[lang].sendButtonText;
+            chatUserInput.placeholder = currentImageUploadData.base64 ? uiTexts[lang].photoQueryPlaceholder : uiTexts[lang].inputPlaceholder;
+            removeImageButton.title = uiTexts[lang].removeImageTitle;
+            qModesButton.title = uiTexts[lang].qModesModalTitle;
+            imageAttachButton.title = uiTexts[lang].imageAttachButtonText;
+            
+            // Modals
+            document.getElementById('aboutModalTitle').textContent = uiTexts[lang].aboutModalTitle;
+            document.getElementById('aboutModalCreator').innerHTML = uiTexts[lang].aboutModalCreator;
+            document.getElementById('aboutModalP1').textContent = uiTexts[lang].aboutModalP1;
+            document.getElementById('aboutModalP2').textContent = uiTexts[lang].aboutModalP2;
+            document.getElementById('aboutModalCloseButton').textContent = uiTexts[lang].modalCloseButton;
+            document.getElementById('messageModalCloseButton').textContent = uiTexts[lang].messageModalDefaultButton;
+            document.getElementById('toneModalTitle').textContent = uiTexts[lang].toneModalTitle;
+            document.querySelectorAll('.tone-option-button').forEach(btn => {
+                const toneKey = `tone${btn.dataset.tone.charAt(0).toUpperCase() + btn.dataset.tone.slice(1)}`;
+                btn.textContent = uiTexts[lang][toneKey] || btn.dataset.ur;
+            });
+            document.getElementById('toneModalCloseButton').textContent = uiTexts[lang].modalCloseButton;
+            document.getElementById('qModesModalTitle').textContent = uiTexts[lang].qModesModalTitle;
+            document.querySelectorAll('.q-modes-option-button').forEach(btn => btn.textContent = btn.dataset[lang] || btn.dataset.ur);
+            document.getElementById('qModesModalCloseButton').textContent = uiTexts[lang].modalCloseButton;
+            
+            // Sidebar
+            document.getElementById('sidebarTitle').innerHTML = `<i class="fas fa-cogs"></i> ${uiTexts[lang].sidebarTitle}`;
+            document.querySelector('#aboutOption .sidebar-text').textContent = uiTexts[lang].sidebarAbout;
+            document.querySelector('#responseLangOptionContainer .sidebar-text').textContent = uiTexts[lang].sidebarResponseLang;
+            document.querySelector('#themeToggleOption .sidebar-text').textContent = uiTexts[lang].sidebarThemeToggle;
+            document.querySelector('#newChatOption .sidebar-text').textContent = uiTexts[lang].sidebarNewChat;
+            document.querySelector('#responseToneOption .sidebar-text').textContent = uiTexts[lang].sidebarResponseTone;
+            document.querySelector('#creativeWritingOption .sidebar-text').textContent = uiTexts[lang].sidebarCreativeWriting;
+            document.querySelector('#copyChatOption .sidebar-text').textContent = uiTexts[lang].sidebarCopyChat;
+            document.querySelector('#exportChatOption .sidebar-text').textContent = uiTexts[lang].sidebarExportChat;
+            document.querySelectorAll('#aboutModalList li').forEach(li => li.innerHTML = li.dataset[lang] || li.dataset.ur);
+            
+            // Other
+            document.getElementById('bottomStatusBarText').textContent = uiTexts[lang].bottomStatusBarText;
+            scrollToTopArrow.title = uiTexts[lang].scrollToTopTitle;
+            scrollToBottomArrow.title = uiTexts[lang].scrollToBottomTitle;
+            document.querySelectorAll('.message').forEach(msgDiv => updateUILanguageOnElement(msgDiv));
+            const loadingIndicatorP = document.querySelector('#loadingIndicator p');
+            if (loadingIndicatorP) loadingIndicatorP.innerHTML = `${uiTexts[lang].qaiTyping}<span class="dots"></span>`;
+        }
+
+        function updateSuggestedQuestionButtonText() {
+            const lang = currentUILanguage;
+            document.querySelectorAll('.suggested-question-button').forEach(button => {
+                button.textContent = lang === 'en' ? button.dataset.questionEn : button.dataset.questionUr;
+            });
+        }
+
+        function updateUILanguageOnElement(element) {
+             element.querySelectorAll('.action-text').forEach(span => {
+                const parentButton = span.closest('button');
+                if (!parentButton) return;
+                const isUserMsg = parentButton.closest('.message')?.classList.contains('user-message');
+                if (parentButton.classList.contains('copy-button')) span.textContent = isUserMsg ? uiTexts[currentUILanguage].copyQuestionAction : uiTexts[currentUILanguage].copyAction;
+                else if (parentButton.classList.contains('speak-button')) span.textContent = uiTexts[currentUILanguage].speakAction;
+                else if (parentButton.classList.contains('detail-button')) span.textContent = uiTexts[currentUILanguage].detailAction;
+                else if (parentButton.classList.contains('summary-button')) span.textContent = uiTexts[currentUILanguage].summaryAction;
+                else if (parentButton.classList.contains('regenerate-button')) span.textContent = uiTexts[currentUILanguage].regenerateAction;
+            });
+        }
+        
+        // --- App Initialization ---
+        window.onload = () => {
+            initializeFirebase();
+            addAllEventListeners();
+            // User interaction is required to start audio context.
+            document.body.addEventListener('click', initializeAudio, { once: true });
+            document.body.addEventListener('touchend', initializeAudio, { once: true });
+            updateUILanguage();
+        };
+
+    </script>
+</body>
+</html>
