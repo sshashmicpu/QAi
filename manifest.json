@@ -1,0 +1,43 @@
+{
+  "name": "Qai Chatbot",
+  "short_name": "Qai",
+  "description": "Qai is a professional AI-powered chatbot designed for seamless and intelligent conversations.",
+  "lang": "en-US",
+  "start_url": "index.html",
+  "display": "standalone",
+  "status_bar": "default",
+  "background_color": "#ffffff",
+  "theme_color": "#6200ee",
+  "orientation": "portrait-primary",
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open Chat",
+      "short_name": "Chat",
+      "url": "index.html",
+      "description": "Start a new conversation with Qai"
+    }
+  ],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ]
+}
